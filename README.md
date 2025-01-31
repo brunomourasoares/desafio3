@@ -3,16 +3,16 @@
 ## 0 ⦁	Sendo que somente um Adm pode criar novas questões. (EXTRA)
 ```sql
 CREATE TRIGGER check_admin_before_insert
-BEFORE INSERT ON TABELA_QUESTOES
+BEFORE INSERT ON QUESTOES
 FOR EACH ROW
 BEGIN
     DECLARE msg VARCHAR(255);
-    DECLARE user_tipo VARCHAR(50);
+    DECLARE tipo_usuario VARCHAR(50);
 
     -- Assumindo que você tem uma função que retorna o tipo de usuário baseado no ID
-    SET user_tipo = (SELECT TIPO FROM USUARIO WHERE idUSUARIO = NEW.USUARIO_idUSUARIO);
+    SET tipo_usuario = (SELECT TIPO FROM USUARIO WHERE idUSUARIO = NEW.USUARIO_idUSUARIO);
 
-    IF user_tipo != 'Administrador' THEN
+    IF tipo_usuario != 'Administrador' THEN
         SET msg = 'Operação INSERT permitida apenas para Administradores';
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
     END IF;
