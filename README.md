@@ -19,7 +19,7 @@ BEGIN
 END;
 ```
 
-## 1 ⦁	Escreva as instruções sql para popular as tabelas usuario  (um adm e um jogaodor) e questoes (somente uma questão);
+## 1 ⦁	Escreva as instruções sql para popular a tabela USUARIO (um adm e um jogador) e QUESTOES (somente uma questão):
 ```sql
 -- Administrador
 INSERT INTO USUARIO (idUSUARIO, NICK, NOME_USU, SENHA, TIPO) 
@@ -43,7 +43,8 @@ WHERE idQuestoes = 1;
 ```sql
 SELECT U.NICK, J.DATA_jogo, J.TOTAL_PONTOS 
 FROM JOGOS J
-JOIN USUARIO U ON J.USUARIO_idUSUARIO = U.idUSUARIO
+JOIN USUARIO U
+ON J.USUARIO_idUSUARIO = U.idUSUARIO
 ORDER BY J.TOTAL_PONTOS DESC, J.DATA_jogo DESC;
 ```
 
@@ -53,8 +54,10 @@ SELECT Q.DESCRICAO AS Questao, A.DESCRICAO AS Alternativa,
        SUM(CASE WHEN A.CORRETA = '0' THEN 1 ELSE 0 END) AS Total_Erros,
        SUM(CASE WHEN A.CORRETA = '1' THEN 1 ELSE 0 END) AS Total_Acertos
 FROM RESPOSTAS R
-JOIN ALTERNATIVAS A ON R.Questoes_idQuestoes = A.IDQUESTOES
-JOIN QUESTOES Q ON A.IDQUESTOES = Q.idQuestoes
+JOIN ALTERNATIVAS A
+ON R.Questoes_idQuestoes = A.IDQUESTOES
+JOIN QUESTOES Q
+ON A.IDQUESTOES = Q.idQuestoes
 GROUP BY Q.DESCRICAO, A.DESCRICAO;
 ```
 
@@ -62,7 +65,8 @@ GROUP BY Q.DESCRICAO, A.DESCRICAO;
 ```sql
 SELECT U.NICK, AVG(J.TOTAL_PONTOS) AS Media
 FROM JOGOS J
-JOIN USUARIO U ON J.USUARIO_idUSUARIO = U.idUSUARIO
+JOIN USUARIO U
+ON J.USUARIO_idUSUARIO = U.idUSUARIO
 GROUP BY U.NICK;
 ```
 
@@ -70,6 +74,7 @@ GROUP BY U.NICK;
 ```sql
 SELECT U.NOME_USU AS Nome_jogador
 FROM USUARIO U
-LEFT JOIN JOGOS J ON U.idUSUARIO = J.USUARIO_idUSUARIO
+LEFT JOIN JOGOS J
+ON U.idUSUARIO = J.USUARIO_idUSUARIO
 WHERE J.idJOGO IS NULL AND U.TIPO = 'Jogador';
 ```
